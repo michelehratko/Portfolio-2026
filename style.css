@@ -564,3 +564,114 @@ body {
   color: rgba(17, 17, 17, 0.45);
   font-variant-numeric: tabular-nums;
 } 
+
+/*list view of interactive section */
+.work-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.view-toggle {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.project-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  border-bottom: 1px solid rgba(0,0,0,.45);
+  padding: 6px 0 3px;
+  font-size: 12px;
+}
+
+.project-row span:last-child {
+  color: rgba(0,0,0,.38);
+}
+
+.work-view-body {
+  position: relative;
+  min-height: 190px;
+  margin: 10px 0 14px;
+}
+
+.work-view-body .portfolio-network,
+.work-view-body .project-list-view {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+}
+
+.project-list-view {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.portfolio-network {
+  z-index: 2;
+}
+
+.work-view.show-list .portfolio-network {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.work-view.show-list .project-list-view {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 3;
+}
+
+.work-view {
+  position: relative;
+}
+
+.work-view-body {
+  position: relative;
+  min-height: 190px;
+  margin: 10px 0 14px;
+}
+
+.work-view-body .portfolio-network,
+.work-view-body .project-list-view {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+}
+
+.project-list-view {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.portfolio-network {
+  z-index: 2;
+}
+
+.work-view.show-list .portfolio-network {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.work-view.show-list .project-list-view {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 3;
+}
+
+.work-view.show-list .work-view-body {
+  height: 240px; /* hard code */ 
+}

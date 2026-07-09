@@ -19,11 +19,13 @@ function stageHeight() {
 }
 
 function drawX(x) {
-  return x * (stage.getBoundingClientRect().width / SIM_WIDTH);
+  const w = Math.max(1, stage.getBoundingClientRect().width);
+  return x * (w / SIM_WIDTH);
 }
 
 function drawY(y) {
-  return y * (stage.getBoundingClientRect().height / SIM_HEIGHT);
+  const h = Math.max(1, stage.getBoundingClientRect().height);
+  return y * (h / SIM_HEIGHT);
 }
 
 const projects = [
@@ -539,3 +541,21 @@ window.addEventListener("resize", render);
 
 shuffle();
 tick();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const workView = document.querySelector(".work-view");
+  const viewToggle = document.querySelector("#viewToggle");
+
+  if (!workView || !viewToggle) return;
+
+  viewToggle.addEventListener("click", () => {
+    workView.classList.toggle("show-list");
+
+    const isList = workView.classList.contains("show-list");
+    viewToggle.textContent = isList ? "Data View" : "List View";
+
+    if (!isList && typeof render === "function") {
+      requestAnimationFrame(render);
+    }
+  });
+});
