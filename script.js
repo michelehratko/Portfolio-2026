@@ -7,8 +7,8 @@ const title = stage.querySelector("#stateTitle");
 const counter = stage.querySelector("#stateCounter");
 const shuffleButton = stage.querySelector("#shuffle");
 
-const SIM_WIDTH = 320;
-const SIM_HEIGHT = 190;
+const SIM_WIDTH = 340;
+const SIM_HEIGHT = 200;
 
 function stageWidth() {
   return SIM_WIDTH;
@@ -42,47 +42,47 @@ const stateDefinitions = [
     title: "type of work",
     field: "type",
     labels: {
-      editorial: { x: .24, y: .22 },
-      brand: { x: .41, y: .62 },
-      data: { x: .72, y: .36 }
+        editorial: { x: .18, y: .20 },
+        brand: { x: .45, y: .74 },
+        data: { x: .80, y: .34 }
     }
   },
   {
     title: "role",
     field: "role",
     labels: {
-      solo: { x: .25, y: .28 },
-      team: { x: .73, y: .39 },
-      lead: { x: .52, y: .68 }
+        solo: { x: .16, y: .30 },
+        team: { x: .80, y: .24 },
+        lead: { x: .48, y: .72 }
     }
   },
   {
     title: "process / skills",
     field: "process",
     labels: {
-      research: { x: .25, y: .25 },
-      leading: { x: .63, y: .23 },
-      production: { x: .82, y: .47 },
-      experimenting: { x: .25, y: .65 },
-      learning: { x: .58, y: .78 }
+        research: { x: .18, y: .24 },
+        leading: { x: .62, y: .18 },
+        production: { x: .84, y: .48 },
+        experimenting: { x: .22, y: .76 },
+        learning: { x: .66, y: .82 }
     }
   },
   {
     title: "reach",
     field: "reach",
     labels: {
-      regional: { x: .22, y: .66 },
-      global: { x: .66, y: .22 },
-      school: { x: .70, y: .78 }
+        regional: { x: .18, y: .68 },
+        global: { x: .68, y: .20 },
+        school: { x: .76, y: .78 }
     }
   },
   {
     title: "client",
     field: "client",
     labels: {
-      coursework: { x: .25, y: .28 },
-      club: { x: .53, y: .72 },
-      intern: { x: .73, y: .45 }
+        coursework: { x: .18, y: .30 },
+        club: { x: .58, y: .78 },
+        intern: { x: .82, y: .22 }
     }
   }
 ];
@@ -226,8 +226,8 @@ function useState(next) {
     const tx = -dy / dist;
     const ty = dx / dist;
 
-    node.vx += tx * 2.8 * impulseFlip + (cx - node.x) * 0.014;
-    node.vy += ty * 2.8 * impulseFlip + (cy - node.y) * 0.014;
+    node.vx += tx * 1.6 * impulseFlip + (cx - node.x) * 0.02;
+    node.vy += ty * 1.6 * impulseFlip + (cy - node.y) * 0.02;
   });
 
   resetLines();
@@ -277,8 +277,8 @@ function labelEdgePointSim(label, x, y) {
   const sx = stage.getBoundingClientRect().width / SIM_WIDTH;
   const sy = stage.getBoundingClientRect().height / SIM_HEIGHT;
 
-  const halfW = (rect.width / 2) / Math.max(sx, 0.0001);
-  const halfH = (rect.height / 2) / Math.max(sy, 0.0001);
+  const halfW = (rect.width / 2 + 24) / Math.max(sx, 0.0001);
+  const halfH = (rect.height / 2 + 18) / Math.max(sy, 0.0001);
 
   const dx = x - label.x;
   const dy = y - label.y;
@@ -328,15 +328,15 @@ function applyForces() {
       const dy = edge.y - node.y;
       const dist = Math.max(1, Math.hypot(dx, dy));
 
-      const desired = linked.length > 1 ? 58 : 46;
+      const desired = linked.length > 1 ? 50: 38; 
 
       const elapsed = performance.now() - transitionStart;
-      const easeIn = Math.min(1, elapsed / 240);
+      const easeIn = Math.min(1, elapsed / 140);
       const eased = easeIn * easeIn * (3 - 2 * easeIn);
 
-      const pull = (dist - desired) * 0.0054 * eased;
+      const pull = (dist - desired) * 0.0065; 
 
-      node.vx += (dx / dist) * pull;
+      node.vx += (dx / dist) * pull * 0.85;
       node.vy += (dy / dist) * pull;
 
       label.vx -= (dx / dist) * pull * 0.08;
@@ -351,8 +351,8 @@ function applyForces() {
     const sx = stage.getBoundingClientRect().width / SIM_WIDTH;
     const sy = stage.getBoundingClientRect().height / SIM_HEIGHT;
 
-    const halfW = (rect.width / 2 + 15) / Math.max(sx, 0.0001);
-    const halfH = (rect.height / 2 + 13) / Math.max(sy, 0.0001);
+    const halfW = (rect.width / 2 + 42) / Math.max(sx, 0.0001);
+    const halfH = (rect.height / 2 + 30) / Math.max(sy, 0.0001);
 
     nodes.forEach(node => {
       const dx = node.x - label.x;
@@ -363,9 +363,9 @@ function applyForces() {
         const py = (halfH - Math.abs(dy)) / halfH;
 
         if (px < py) {
-          node.vx += (dx >= 0 ? 1 : -1) * px * 0.55;
+          node.vx += (dx >= 0 ? 1 : -1) * px * 1.35; 
         } else {
-          node.vy += (dy >= 0 ? 1 : -1) * py * 0.55;
+          node.vy += (dy >= 0 ? 1 : -1) * py * 1.35; 
         }
       }
     });
@@ -379,7 +379,7 @@ function applyForces() {
       const dx = b.x - a.x;
       const dy = b.y - a.y;
       const dist = Math.max(1, Math.hypot(dx, dy));
-      const min = 34;
+      const min = 42; 
 
       if (dist < min) {
         const push = (min - dist) * 0.012;
@@ -430,8 +430,8 @@ function applyForces() {
     node.vx += (cdx / cdist) * 0.08 * reorganize;
     node.vy += (cdy / cdist) * 0.08 * reorganize;
 
-    node.vx *= 0.82;
-    node.vy *= 0.82;
+    node.vx *= 0.74;
+    node.vy *= 0.74;
     node.x += node.vx;
     node.y += node.vy;
 

@@ -463,7 +463,6 @@ body {
 
 /* data interaction */ 
 /* Interactive portfolio data viz */
-
 .portfolio-network {
   --bg: #fff;
   --ink: #111;
@@ -471,15 +470,10 @@ body {
 
   position: relative;
   width: 100%;
-  height: clamp(145px, 18vw, 190px);
-  margin: 10px 0 10px;
-  overflow: visible; /* important: keeps dots/lines inside sidebar */
+  height: clamp(150px, 18vw, 190px);
+  margin: 10px 0 14px;
+  overflow: visible;
   color: var(--ink);
-  border: 2px solid red;
-}
-
-.portfolio-network #stateTitle {
-  display: none;
 }
 
 .portfolio-network #field {
@@ -496,6 +490,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: visible;
+  pointer-events: none;
 }
 
 .portfolio-network line {
