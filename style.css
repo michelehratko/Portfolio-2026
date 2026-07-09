@@ -221,7 +221,7 @@ body {
     display: block;
     text-decoration: underline;
     color: #111;
-    margin-bottom: 10px;
+    margin-bottom: 2px;
 }
 
 /* info grid 2 columns */ 
@@ -471,9 +471,10 @@ body {
   position: relative;
   width: 100%;
   height: clamp(150px, 18vw, 190px);
-  margin: 10px 0 14px;
+  margin: 3px 0 14px;
   overflow: visible;
   color: var(--ink);
+  border: 2px solid red;
 }
 
 .portfolio-network #field {
@@ -565,6 +566,10 @@ body {
   font-variant-numeric: tabular-nums;
 } 
 
+.portfolio-network #stateTitle {
+    display: none;
+}
+
 /*list view of interactive section */
 .work-view-header {
   display: flex;
@@ -598,6 +603,7 @@ body {
   position: relative;
   min-height: 190px;
   margin: 10px 0 14px;
+  border: 2px solid red;
 }
 
 .work-view-body .portfolio-network,
@@ -638,7 +644,7 @@ body {
 .work-view-body {
   position: relative;
   min-height: 190px;
-  margin: 10px 0 14px;
+  margin: 0px 0 14px;
 }
 
 .work-view-body .portfolio-network,
@@ -648,30 +654,38 @@ body {
   width: 100%;
 }
 
-.project-list-view {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.portfolio-network {
-  z-index: 2;
-}
-
-.work-view.show-list .portfolio-network {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.work-view.show-list .project-list-view {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  z-index: 3;
-}
-
 .work-view.show-list .work-view-body {
-  height: 240px; /* hard code */ 
+  height: 220px; /* hard code */
+}
+
+/* list view hover */
+.list-name{
+    position: relative;
+    padding-left: 0px;
+    text-decoration:none;
+}
+
+.list-name::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:50%;
+
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:#111;
+
+    transform:translateY(-50%);
+    display:none;
+}
+
+.project-row:hover .list-name::before{
+    display:block;
+}
+
+.project-row:hover .list-name{
+    padding-left:20px;
+    text-decoration:underline;
+    text-underline-offset:3px;
 }
