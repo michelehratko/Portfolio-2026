@@ -559,6 +559,49 @@ field.addEventListener("click", shuffle);
 
 window.addEventListener("resize", render);
 
+function updateListSubtitleVisibility() {
+  const list = document.querySelector(".project-list-view");
+  if (!list) return;
+
+  const rows = [...list.querySelectorAll(".project-row")];
+  const availableWidth = list.clientWidth;
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  let widestName = 0;
+  let widestSubtitle = 0;
+
+  rows.forEach(row => {
+    const name = row.querySelector(".list-name");
+    const subtitle = row.querySelector("span:not(.list-name)");
+    if (!name || !subtitle) return;
+
+    const nameStyle = getComputedStyle(name);
+    const subtitleStyle = getComputedStyle(subtitle);
+
+    context.font = nameStyle.font;
+    widestName = Math.max(
+      widestName,
+      context.measureText(name.textContent.trim()).width
+    );
+    context.font = subtitleStyle.font;
+    widestSubtitle = Math.max(
+      widestSubtitle,
+      context.measureText(subtitle.textContent.trim()).width
+    );
+  });
+
+  const hoverIndent = 20;
+  const columnGap = 16;
+  const needsMoreSpace = widestName + widestSubtitle + hoverIndent + columnGap > availableWidth;
+
+  list.classList.toggle("hide-subtitles", needsMoreSpace);
+}
+
+window.addEventListener("resize", updateListSubtitleVisibility);
+document.fonts.ready.then(updateListSubtitleVisibility);
+updateListSubtitleVisibility();
+
 shuffle();
 tick();
 
@@ -568,14 +611,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!workView || !viewToggle) return;
 
-  viewToggle.addEventListener("click", () => {
-    workView.classList.toggle("show-list");
+  const compactView = window.matchMedia("(max-width: 1100px)");
+  let prefersListView = workView.classList.contains("show-list");
 
-    const isList = workView.classList.contains("show-list");
+  function setListView(isList) {
+    workView.classList.toggle("show-list", isList);
     viewToggle.textContent = isList ? "Data View" : "List View";
 
     if (!isList && typeof render === "function") {
       requestAnimationFrame(render);
     }
+  }
+
+  function syncResponsiveView() {
+    setListView(compactView.matches || prefersListView);
+  }
+
+  viewToggle.addEventListener("click", () => {
+    prefersListView = !workView.classList.contains("show-list");
+    setListView(prefersListView);
   });
+
+  compactView.addEventListener("change", syncResponsiveView);
+  syncResponsiveView();
 });
