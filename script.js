@@ -146,11 +146,16 @@ projects.forEach(project => {
 
   field.appendChild(el);
 
+  const initialX = stageWidth() / 2 + Math.random() * 80 - 40;
+  const initialY = stageHeight() / 2 + Math.random() * 80 - 40;
+
   nodes.push({
     id: project.id,
     el,
-    x: stageWidth() / 2 + Math.random() * 80 - 40,
-    y: stageHeight() / 2 + Math.random() * 80 - 40,
+    x: initialX,
+    y: initialY,
+    displayX: initialX,
+    displayY: initialY,
     vx: 0,
     vy: 0
   });
@@ -228,8 +233,8 @@ function useState(next) {
     const tx = -dy / dist;
     const ty = dx / dist;
 
-    node.vx += tx * 1.6 * impulseFlip + (cx - node.x) * 0.02;
-    node.vy += ty * 1.6 * impulseFlip + (cy - node.y) * 0.02;
+    node.vx += tx * 1.0 * impulseFlip + (cx - node.x) * 0.02;
+    node.vy += ty * 1.0 * impulseFlip + (cy - node.y) * 0.02;
   });
 
   resetLines();
@@ -279,8 +284,8 @@ function labelEdgePointSim(label, x, y) {
   const sx = stage.getBoundingClientRect().width / SIM_WIDTH;
   const sy = stage.getBoundingClientRect().height / SIM_HEIGHT;
 
-  const halfW = (rect.width / 2 + 24) / Math.max(sx, 0.0001);
-  const halfH = (rect.height / 2 + 18) / Math.max(sy, 0.0001);
+  const halfW = (rect.width / 2 + 14) / Math.max(sx, 0.0001);
+  const halfH = (rect.height / 2 + 10) / Math.max(sy, 0.0001);
 
   const dx = x - label.x;
   const dy = y - label.y;
@@ -308,8 +313,8 @@ function applyForces() {
 
     label.vx += (label.tx - label.x) * 0.009 * eased;
     label.vy += (label.ty - label.y) * 0.009 * eased;
-    label.vx *= 0.84;
-    label.vy *= 0.84;
+    label.vx *= 0.78;
+    label.vy *= 0.78;
     label.x += label.vx;
     label.y += label.vy;
 
@@ -330,13 +335,13 @@ function applyForces() {
       const dy = edge.y - node.y;
       const dist = Math.max(1, Math.hypot(dx, dy));
 
-      const desired = linked.length > 1 ? 50: 38; 
+      const desired = linked.length > 1 ? 32 : 24;
 
       const elapsed = performance.now() - transitionStart;
       const easeIn = Math.min(1, elapsed / 140);
       const eased = easeIn * easeIn * (3 - 2 * easeIn);
 
-      const pull = (dist - desired) * 0.0065; 
+      const pull = (dist - desired) * 0.014;
 
       node.vx += (dx / dist) * pull * 0.85;
       node.vy += (dy / dist) * pull;
@@ -353,12 +358,13 @@ function applyForces() {
     const sx = stage.getBoundingClientRect().width / SIM_WIDTH;
     const sy = stage.getBoundingClientRect().height / SIM_HEIGHT;
 
-    const halfW = (rect.width / 2 + 42) / Math.max(sx, 0.0001);
-    const halfH = (rect.height / 2 + 30) / Math.max(sy, 0.0001);
+    const halfW = (rect.width / 2 + 26) / Math.max(sx, 0.0001);
+    const baseHalfH = rect.height / 2;
 
     nodes.forEach(node => {
       const dx = node.x - label.x;
       const dy = node.y - label.y;
+      const halfH = (baseHalfH + (dy < 0 ? 30 : 14)) / Math.max(sy, 0.0001);
 
       if (Math.abs(dx) < halfW && Math.abs(dy) < halfH) {
         const px = (halfW - Math.abs(dx)) / halfW;
@@ -378,13 +384,20 @@ function applyForces() {
       const a = nodes[i];
       const b = nodes[j];
 
-      const dx = b.x - a.x;
-      const dy = b.y - a.y;
-      const dist = Math.max(1, Math.hypot(dx, dy));
-      const min = 42; 
+      let dx = b.x - a.x;
+      let dy = b.y - a.y;
+      let dist = Math.hypot(dx, dy);
+      const min = 50;
+
+      if (dist < 0.01) {
+        const angle = ((a.id * 37 + b.id * 61) % 360) * Math.PI / 180;
+        dx = Math.cos(angle);
+        dy = Math.sin(angle);
+        dist = 1;
+      }
 
       if (dist < min) {
-        const push = (min - dist) * 0.012;
+        const push = (min - dist) * 0.018;
         const ux = dx / dist;
         const uy = dy / dist;
 
@@ -432,10 +445,15 @@ function applyForces() {
     node.vx += (cdx / cdist) * 0.08 * reorganize;
     node.vy += (cdy / cdist) * 0.08 * reorganize;
 
-    node.vx *= 0.74;
-    node.vy *= 0.74;
-    node.x += node.vx;
-    node.y += node.vy;
+    if (node.id === hoveredProjectId) {
+      node.vx = 0;
+      node.vy = 0;
+    } else {
+      node.vx *= 0.66;
+      node.vy *= 0.66;
+      node.x += node.vx;
+      node.y += node.vy;
+    }
 
     const pad = 12;
 
@@ -468,21 +486,23 @@ function render() {
   });
 
   nodes.forEach(node => {
-    node.el.style.transform = `translate(${drawX(node.x)}px, ${drawY(node.y)}px) translate(-50%, -50%)`;
+    node.displayX += (node.x - node.displayX) * 0.14;
+    node.displayY += (node.y - node.displayY) * 0.14;
+    node.el.style.transform = `translate(${drawX(node.displayX)}px, ${drawY(node.displayY)}px) translate(-50%, -50%)`;
   });
 
   if (hoveredProjectId !== null) {
     const hovered = nodes.find(node => node.id === hoveredProjectId);
 
     if (hovered) {
-      const offset = 16;
+      const offset = 8;
       const rect = hoverTitle.getBoundingClientRect();
 
-      let x = drawX(hovered.x) + offset;
-      let y = drawY(hovered.y);
+      let x = drawX(hovered.displayX) + offset;
+      let y = drawY(hovered.displayY);
 
       if (x + rect.width > stage.getBoundingClientRect().width - 8) {
-        x = drawX(hovered.x) - rect.width - offset;
+        x = drawX(hovered.displayX) - rect.width - offset;
       }
 
       x = Math.max(8, Math.min(stage.getBoundingClientRect().width - rect.width - 8, x));
@@ -499,14 +519,14 @@ function render() {
 
     if (!node || !labelObj) return;
 
-    const edge = labelEdgePoint(labelObj, node.x, node.y);
+    const edge = labelEdgePoint(labelObj, node.displayX, node.displayY);
 
     const elapsed = performance.now() - transitionStart;
     const grow = Math.min(1, Math.max(0, (elapsed - 90) / 340));
     const easedGrow = grow * grow * (3 - 2 * grow);
 
-    const nodeX = drawX(node.x);
-    const nodeY = drawY(node.y);
+    const nodeX = drawX(node.displayX);
+    const nodeY = drawY(node.displayY);
 
     const mx = (nodeX + edge.x) / 2;
     const my = (nodeY + edge.y) / 2;
