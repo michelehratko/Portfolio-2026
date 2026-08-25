@@ -605,11 +605,11 @@ updateListSubtitleVisibility();
 shuffle();
 tick();
 
-document.addEventListener("DOMContentLoaded", () => {
+{
   const workView = document.querySelector(".work-view");
   const viewToggle = document.querySelector("#viewToggle");
 
-  if (!workView || !viewToggle) return;
+  if (workView && viewToggle) {
 
   const compactView = window.matchMedia("(max-width: 1100px)");
   let prefersListView = workView.classList.contains("show-list");
@@ -633,5 +633,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   compactView.addEventListener("change", syncResponsiveView);
-  syncResponsiveView();
-});
+    syncResponsiveView();
+  }
+}

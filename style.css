@@ -162,6 +162,12 @@ body {
   height: 100vh;
 }
 
+/* The placeholder is the grid item; the fetched .sidebar lives inside it. */
+#sidebar-placeholder {
+  grid-column: 1 / 4;
+  min-width: 0;
+}
+
 .sidebar {
   grid-column: 1 / 4;
   height: 100vh;
@@ -287,6 +293,10 @@ body {
 
 /* project cards */ 
 
+.project-page {
+  grid-column: 4 / 13;
+}
+
 .project-card {
     display: grid;
     grid-column: 1 / -1;
@@ -305,7 +315,6 @@ body {
     grid-column: 1 / -1;
     width: 100%;
     aspect-ratio: 16 / 9;
-    background-color: #000;
     margin-bottom: 12px;
     overflow: hidden;
 }
@@ -354,9 +363,10 @@ body {
 
 /* project page */ 
 .project-topbar {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 32px;
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 32px;
 }
 
 .close-link {
@@ -365,7 +375,11 @@ body {
 }
 
 .case-study {
+    /* Span every column inside .projects (global page columns 4–12). */
+    grid-column: 1 / -1;
     padding-bottom: 80px;
+    display: grid;
+    grid-template-columns: subgrid;
 }
 
 .case-media {
@@ -374,39 +388,87 @@ body {
     background: #000;
 }
 
-.case-media-large {
+.case-media.hero {
+    grid-column: 1 / -1;
+    width: 100%;
     aspect-ratio: 16 / 9;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.case-media-large {
+    width: 100%;
+    margin-bottom: var(--grid-gutter);
+}
+
+.case-media-large img {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: auto; /* overrides any fixed ratio set elsewhere */
+    object-fit: unset;  /* remove if object-fit was being used for cropping */
 }
 
 .case-intro {
-    display: grid;
-    grid-template-columns: 1.2fr 1.6fr 1.2fr;
-    gap: var(--grid-gutter);
-    margin: 16px 0 40px;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  gap: var(--grid-gutter);
+  margin: 16px 0 40px;
+}
+
+.case-subhead {
+  margin: 0 0 12px;
+}
+
+.case-description p {
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+
+.case-description .case-subhead {
+  font-size: 16px;
+}
+
+.case-title,
+.case-description {
+  grid-column: 1 / 5; /* five columns */
+}
+
+.case-title,
+.case-media-large,
+.case-intro,
+.case-text-row,
+.case-image-grid {
+    grid-column: 1 / -1;
+}
+
+.case-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-size: 14px;
+    grid-column: 6 / 8;
+}
+
+.case-credits {
+    grid-column: 8 / -1;
+    font-size: 14px;
 }
 
 .case-title {
     display: flex;
     gap: 12px;
+    font-size: 16px;
     align-items: baseline;
-}
-
-.case-description {
-    max-width: 360px;
-}
-
-.case-meta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    font-size: 14px;
 }
 
 .case-text-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--grid-gutter);
-    margin: 16px 0 40px;
+    margin: 0px 0 40px;
+    font-size: 14px;
 }
 
 .case-image-grid {
