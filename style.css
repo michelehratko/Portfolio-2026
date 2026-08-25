@@ -396,9 +396,12 @@ body {
     overflow: hidden;
 }
 
+.case-media-large, .case-image-grid {
+   margin-bottom: 18px;
+}
+
 .case-media-large {
     width: 100%;
-    margin-bottom: var(--grid-gutter);
 }
 
 .case-media-large img {
@@ -456,6 +459,11 @@ body {
     font-size: 14px;
 }
 
+/* Lets the meta and credits occupy their own grid columns on wide screens. */
+.case-details {
+    display: contents;
+}
+
 .case-title {
     display: flex;
     gap: 12px;
@@ -465,15 +473,23 @@ body {
 
 .case-text-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--grid-gutter);
-    margin: 0px 0 40px;
+    grid-template-columns: subgrid;
+    margin: 0px 0 25px;
     font-size: 14px;
+}
+
+.case-text-row p:first-child {
+    grid-column: 1 / 5;
+}
+
+.case-text-row p:nth-child(2) {
+    grid-column: 6 / 10;
 }
 
 .case-image-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: var(--case-image-grid-columns, 1fr 1fr);
+    align-items: start;
     gap: var(--grid-gutter);
 }
 
@@ -486,6 +502,60 @@ body {
     height: 100%;
     display: block;
     object-fit: cover;
+}
+
+/* Large case-study media keeps each file's intrinsic aspect ratio. */
+.case-media.case-media-large {
+    aspect-ratio: auto;
+    overflow: visible;
+}
+
+.case-media-large img,
+.case-media-large video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/* Two-up media uses the same uncropped, intrinsic sizing as large media. */
+.case-image-grid .case-media {
+    min-width: 0;
+    aspect-ratio: auto;
+    overflow: visible;
+}
+
+.case-image-grid .case-media img,
+.case-image-grid .case-media video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/* Keep the intro description beside its details until the project columns
+   become too narrow; then stack the meta and credits in one detail column. */
+@media screen and (max-width: 1100px) {
+    .case-details {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        grid-column: 6 / -1;
+        grid-row: 1;
+    }
+}
+
+/* At narrower desktop/tablet widths, use a single reading column. */
+@media screen and (max-width: 900px) {
+    .case-intro,
+    .case-text-row {
+        display: block;
+    }
+
+    .case-intro > * + *,
+    .case-text-row p + p {
+        margin-top: 16px;
+    }
 }
 
 /* responsiveness */
