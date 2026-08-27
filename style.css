@@ -478,11 +478,11 @@ body {
     font-size: 14px;
 }
 
-.case-text-row p:first-child {
+.case-text-short {
     grid-column: 1 / 5;
 }
 
-.case-text-row p:nth-child(2) {
+.case-text-long {
     grid-column: 6 / 10;
 }
 
@@ -490,7 +490,7 @@ body {
     display: grid;
     grid-template-columns: var(--case-image-grid-columns, 1fr 1fr);
     align-items: start;
-    gap: var(--grid-gutter);
+    gap: 16px;
 }
 
 .case-media {
@@ -533,6 +533,15 @@ body {
     object-fit: contain;
 }
 
+.case-image-grid > img,
+.case-image-grid > video {
+    min-width: 0;
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
 /* Keep the intro description beside its details until the project columns
    become too narrow; then stack the meta and credits in one detail column. */
 @media screen and (max-width: 1100px) {
@@ -553,7 +562,7 @@ body {
     }
 
     .case-intro > * + *,
-    .case-text-row p + p {
+    .case-text-short + .case-text-long {
         margin-top: 16px;
     }
 }
@@ -619,7 +628,8 @@ body {
 
     .case-description,
     .case-meta,
-    .case-text-row p,
+    .case-text-short,
+    .case-text-long,
     .case-image-grid .case-media {
         margin-top: 16px;
     }

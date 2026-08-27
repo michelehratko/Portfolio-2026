@@ -22,12 +22,12 @@ fetch(new URL("sidebar.html", includeScript.src))
   .catch((error) => console.error("Could not load sidebar:", error));
 
 function getAspectRatio(media) {
-  const image = media.querySelector("img");
+  const image = media.matches("img") ? media : media.querySelector("img");
   if (image?.naturalWidth && image.naturalHeight) {
     return image.naturalWidth / image.naturalHeight;
   }
 
-  const video = media.querySelector("video");
+  const video = media.matches("video") ? media : media.querySelector("video");
   if (video?.videoWidth && video.videoHeight) {
     return video.videoWidth / video.videoHeight;
   }
@@ -36,7 +36,7 @@ function getAspectRatio(media) {
 }
 
 function sizeCaseImageGrid(grid) {
-  const mediaItems = [...grid.querySelectorAll(":scope > .case-media")];
+  const mediaItems = [...grid.querySelectorAll(":scope > .case-media, :scope > img, :scope > video")];
   const ratios = mediaItems.map(getAspectRatio);
 
   if (ratios.length && ratios.every(Boolean)) {
@@ -49,10 +49,10 @@ function sizeCaseImageGrid(grid) {
 
 window.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".case-image-grid").forEach((grid) => {
-    const mediaItems = [...grid.querySelectorAll(":scope > .case-media")];
+    const mediaItems = [...grid.querySelectorAll(":scope > .case-media, :scope > img, :scope > video")];
 
     mediaItems.forEach((media) => {
-      const file = media.querySelector("img, video");
+      const file = media.matches("img, video") ? media : media.querySelector("img, video");
       if (file) {
         file.addEventListener("load", () => sizeCaseImageGrid(grid), { once: true });
         file.addEventListener("loadedmetadata", () => sizeCaseImageGrid(grid), { once: true });
