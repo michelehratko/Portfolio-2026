@@ -178,7 +178,10 @@ body {
   scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
+  display: flex;
+  flex-direction: column;
 }
+
 
 .sidebar:hover {
   scrollbar-color: #d9d9d5 transparent;
@@ -210,9 +213,10 @@ body {
   box-sizing: border-box;
   overflow-y: auto;
 
-  /* pushes scrollbar to normal far-right edge */
-  margin-right: 0;
-  padding: 32px 0 40px;
+  /* Extend only the scroll container into the existing outer margin. The
+     matching right padding preserves the current content/grid position. */
+  margin-right: calc(var(--grid-margin) * -1);
+  padding: 32px var(--grid-margin) 40px 0;
 
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
@@ -252,6 +256,7 @@ body {
 .bio {
     font-size: 16px;
     margin-bottom: 32px;
+    border-top: 1px solid red; /* LINE PLACEHOLDER */ 
 }
 
 .nav-link {
@@ -287,8 +292,8 @@ body {
 }
 
 .sidebar-footer {
-    margin-top: 36px;
-    font-size: 14px;
+  margin-top: auto;
+  font-size: 14px;
 }
 
 /* project cards */ 
@@ -317,13 +322,29 @@ body {
     aspect-ratio: 16 / 9;
     margin-bottom: 12px;
     overflow: hidden;
+    position: relative;
 }
 
 .project-media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     display: block;
+}
+
+.project-image-hover {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}
+
+.project-media:hover .project-image-hover {
+    opacity: 1;
+}
+
+.project-media:hover .project-image-default {
+    opacity: 0;
 }
 
 .project-caption {
@@ -366,7 +387,7 @@ body {
   grid-column: 1 / -1;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: 23px;
 }
 
 .close-link {
@@ -380,6 +401,7 @@ body {
     padding-bottom: 80px;
     display: grid;
     grid-template-columns: subgrid;
+    border-top: 1px solid red; /* LINE PLACEHOLDER */ 
 }
 
 .case-media {
@@ -484,6 +506,7 @@ body {
 
 .case-text-long {
     grid-column: 6 / 10;
+    columns: unset; 
 }
 
 .case-image-grid {
@@ -542,6 +565,128 @@ body {
     object-fit: contain;
 }
 
+
+/* ABOUT PAGE */
+.about-copy {
+  grid-column: 1 / -1; /* bio text spans the full 6 columns */
+  border: 1px solid red; 
+  margin-bottom: 4px;
+}
+
+.about-description {
+  grid-column: 1 / 6;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column-gap: var(--grid-gutter);
+  align-content: start; /* prevents rows from stretching to fill leftover height */
+  margin-bottom: 30px;
+}
+
+.about-headshot {
+  grid-column: 6 / -1;
+  grid-row: 1;
+  overflow: hidden;
+  align-self: start; /* redundant now but harmless */
+}
+
+.about-headshot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.about-business-card {
+  grid-column: 1 / -1; /* fills the full width of the 6-column .about-description */
+  overflow: hidden;
+}
+
+.about-business-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.about-info-columns {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  margin-top: 0;
+  font-size: 14px;
+  border: 1px solid red; 
+  margin-top: 32px;
+}
+
+.about-info-columns .info-column:first-child {
+  grid-column: 1 / 3; /* first 3 of the 6 local columns */
+}
+
+.about-info-columns .info-column:last-child {
+  grid-column: 3 / 5; /* last 3 of the 6 local columns */
+}
+
+.about-info-columns .info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Stage 1: Experience/Education/Press and Contact stack into one column,
+   but bio + headshot stay side by side. */
+@media screen and (max-width: 1100px) {
+  .about-info-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .about-info-columns .info-column:first-child,
+  .about-info-columns .info-column:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .about-info-columns .info-column:last-child {
+    margin-top: 24px;
+  }
+}
+
+/* Stage 2: whole page goes to one column, headshot moves above the bio. */
+@media screen and (max-width: 768px) {
+  .about-intro {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .about-headshot {
+    grid-column: 1;
+    grid-row: 1;
+    order: -1;
+    margin-bottom: 24px;
+  }
+
+  .about-description {
+    grid-column: 1;
+    grid-row: 2;
+    display: block;
+  }
+
+  .about-copy {
+    margin-bottom: 24px;
+  }
+}
+
+/* Keep the About intro at the top; its close control does not need a layout row. */
+@media screen and (min-width: 769px) {
+  .project-page:has(.about-intro) {
+    position: relative;
+  }
+
+  .project-page:has(.about-intro) .project-topbar {
+    position: absolute;
+    top: 32px;
+    right: 0;
+    z-index: 1;
+    margin: 0;
+  }
+}
+
 /* Keep the intro description beside its details until the project columns
    become too narrow; then stack the meta and credits in one detail column. */
 @media screen and (max-width: 1100px) {
@@ -567,7 +712,7 @@ body {
     }
 }
 
-/* responsiveness */
+/* Sidebar responsiveness */
 /* mobile *//* mobile */
 @media screen and (max-width: 768px) {
   html,
@@ -598,7 +743,11 @@ body {
     margin-bottom: 48px;
   }
 
-  .info-columns {
+  .projects {
+    margin-right: 0;
+  }
+
+  .sidebar .info-columns {
     display: none;
   }
 
@@ -831,6 +980,8 @@ body {
   border-bottom: 1px solid rgba(0,0,0,.45);
   padding: 6px 0 3px;
   font-size: 13px;
+  color: inherit;
+  text-decoration: none;
 }
 
 .project-row span:last-child {
@@ -928,8 +1079,16 @@ body {
     display:block;
 }
 
+.project-row.is-active .list-name::before{
+    display:block;
+}
+
 .project-row:hover .list-name{
     padding-left:20px;
     text-decoration:underline;
     text-underline-offset:3px;
+}
+
+.project-row.is-active .list-name{
+    padding-left:20px;
 }

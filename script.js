@@ -29,15 +29,17 @@ function drawY(y) {
 }
 
 const projects = [
-  { id: 1, title: "Lunar Gala: Fable", type: ["brand", "editorial"], role: "lead", process: ["leading"], reach: "regional", client: "club" },
-  { id: 2, title: "Who Owns This Book?", type: ["editorial"], role: "solo", process: ["research", "production"], reach: "global", client: "coursework" },
-  { id: 3, title: "Apple Internship", type: ["brand"], role: "team", process: ["learning"], reach: "global", client: "intern" },
-  { id: 4, title: "Pittsburgh Air Quality", type: ["data", "editorial"], role: "solo", process: ["research"], reach: "school", client: "coursework" },
-  { id: 5, title: "Internet Archive Redesign", type: ["brand"], role: "solo", process: ["experimenting"], reach: "school", client: "coursework" },
-  { id: 6, title: "Visualizing the Long Life of Compliments", type: ["data"], role: "solo", process: ["experimenting", "production"], reach: "school", client: "coursework" },
-  { id: 7, title: "Celebrating Giorgia Lupi", type: ["data", "editorial"], role: "solo", process: ["experimenting", "learning"], reach: "school", client: "coursework" },
-  { id: 8, title: "Ovation Film Festival", type: ["brand"], role: "solo", process: ["experimenting"], reach: "regional", client: "club" }
+  { id: 1, title: "Lunar Gala: Fable", path: "project-pages/LunarGalaFable.html", type: ["brand", "editorial"], role: "lead", process: ["leading"], reach: "regional", client: "club" },
+  { id: 2, title: "Who Owns This Book?", path: "project-pages/WhoOwnsThisBook.html", type: ["editorial"], role: "solo", process: ["research", "production"], reach: "global", client: "coursework" },
+  { id: 3, title: "Apple Internship", path: "project-pages/Apple.html", type: ["brand"], role: "team", process: ["learning"], reach: "global", client: "intern" },
+  { id: 4, title: "Pittsburgh Air Quality", path: "project-pages/AirQuality.html", type: ["data", "editorial"], role: "solo", process: ["research"], reach: "school", client: "coursework" },
+  { id: 5, title: "Internet Archive Redesign", path: "project-pages/InternetArchive.html", type: ["brand"], role: "solo", process: ["experimenting"], reach: "school", client: "coursework" },
+  { id: 6, title: "Visualizing the Long Life of Compliments", path: "project-pages/Compliments.html", type: ["data"], role: "solo", process: ["experimenting", "production"], reach: "school", client: "coursework" },
+  { id: 7, title: "Celebrating Giorgia Lupi", path: "project-pages/Lupi.html", type: ["data", "editorial"], role: "solo", process: ["experimenting", "learning"], reach: "school", client: "coursework" },
+  { id: 8, title: "Ovation Film Festival", path: "project-pages/Ovation.html", type: ["brand"], role: "solo", process: ["experimenting"], reach: "regional", client: "club" }
 ];
+
+const siteRoot = new URL(".", document.currentScript?.src || window.location.href);
 
 const stateDefinitions = [
   {
@@ -122,6 +124,7 @@ let active = states[0];
 let transitionStart = performance.now();
 let impulseFlip = 1;
 let hoveredProjectId = null;
+const SETTLE_DURATION = 3000;
 
 const hoverTitle = document.createElement("div");
 hoverTitle.className = "hover-title";
@@ -142,6 +145,18 @@ projects.forEach(project => {
   el.addEventListener("mouseleave", () => {
     hoveredProjectId = null;
     hoverTitle.classList.remove("is-visible");
+  });
+
+  el.addEventListener("click", event => {
+    event.stopPropagation();
+    const destination = new URL(project.path, siteRoot).href;
+    if (window.navigatePortfolioPage) {
+      window.navigatePortfolioPage(destination).catch(() => {
+        window.location.href = destination;
+      });
+    } else {
+      window.location.href = destination;
+    }
   });
 
   field.appendChild(el);
@@ -306,8 +321,9 @@ function labelEdgePointSim(label, x, y) {
 }
 
 function applyForces() {
+  const elapsed = performance.now() - transitionStart;
+
   labels.forEach(label => {
-    const elapsed = performance.now() - transitionStart;
     const easeIn = Math.min(1, elapsed / 220);
     const eased = easeIn * easeIn * (3 - 2 * easeIn);
 
@@ -326,6 +342,19 @@ function applyForces() {
     }
   });
 
+  // Preserve the original layout physics, then freeze it once it has settled.
+  if (elapsed >= SETTLE_DURATION) {
+    labels.forEach(label => {
+      label.vx = 0;
+      label.vy = 0;
+    });
+    nodes.forEach(node => {
+      node.vx = 0;
+      node.vy = 0;
+    });
+    return;
+  }
+
   nodes.forEach(node => {
     const linked = linkedLabels(node);
 
@@ -335,19 +364,20 @@ function applyForces() {
       const dy = edge.y - node.y;
       const dist = Math.max(1, Math.hypot(dx, dy));
 
-      const desired = linked.length > 1 ? 32 : 24;
+      // Keep each dot visibly associated with its own label. Dots with a
+      // single connection can sit closer; shared dots leave room for lines.
+      const desired = linked.length > 1 ? 28 : 18;
 
-      const elapsed = performance.now() - transitionStart;
       const easeIn = Math.min(1, elapsed / 140);
       const eased = easeIn * easeIn * (3 - 2 * easeIn);
 
-      const pull = (dist - desired) * 0.014;
+      const pull = (dist - desired) * 0.022;
 
-      node.vx += (dx / dist) * pull * 0.85;
+      node.vx += (dx / dist) * pull;
       node.vy += (dy / dist) * pull;
 
-      label.vx -= (dx / dist) * pull * 0.08;
-      label.vy -= (dy / dist) * pull * 0.08;
+      label.vx -= (dx / dist) * pull * 0.04;
+      label.vy -= (dy / dist) * pull * 0.04;
     });
   });
 
@@ -358,22 +388,23 @@ function applyForces() {
     const sx = stage.getBoundingClientRect().width / SIM_WIDTH;
     const sy = stage.getBoundingClientRect().height / SIM_HEIGHT;
 
-    const halfW = (rect.width / 2 + 26) / Math.max(sx, 0.0001);
+    // Include the dot and its number in the collision area around each label.
+    const halfW = (rect.width / 2 + 30) / Math.max(sx, 0.0001);
     const baseHalfH = rect.height / 2;
 
     nodes.forEach(node => {
       const dx = node.x - label.x;
       const dy = node.y - label.y;
-      const halfH = (baseHalfH + (dy < 0 ? 30 : 14)) / Math.max(sy, 0.0001);
+      const halfH = (baseHalfH + (dy < 0 ? 34 : 18)) / Math.max(sy, 0.0001);
 
       if (Math.abs(dx) < halfW && Math.abs(dy) < halfH) {
         const px = (halfW - Math.abs(dx)) / halfW;
         const py = (halfH - Math.abs(dy)) / halfH;
 
         if (px < py) {
-          node.vx += (dx >= 0 ? 1 : -1) * px * 1.35; 
+          node.vx += (dx >= 0 ? 1 : -1) * px * 1.35;
         } else {
-          node.vy += (dy >= 0 ? 1 : -1) * py * 1.35; 
+          node.vy += (dy >= 0 ? 1 : -1) * py * 1.35;
         }
       }
     });
@@ -435,7 +466,6 @@ function applyForces() {
   }
 
   nodes.forEach(node => {
-    const elapsed = performance.now() - transitionStart;
     const reorganize = Math.max(0, 1 - elapsed / 900);
 
     const cdx = node.x - stageWidth() / 2;
@@ -606,13 +636,36 @@ shuffle();
 tick();
 
 {
+  const hideNetwork = window.matchMedia("(max-width: 768px)");
+
+function syncNetworkVisibility() {
+  const workViewBody = document.querySelector(".work-view-body");
+  if (!workViewBody) return;
+
+  if (hideNetwork.matches) {
+    workViewBody.style.height = "0";
+    workViewBody.style.minHeight = "0";
+    workViewBody.style.overflow = "hidden";
+    workViewBody.style.pointerEvents = "none";
+  } else {
+    workViewBody.style.height = "";
+    workViewBody.style.minHeight = "";
+    workViewBody.style.overflow = "";
+    workViewBody.style.pointerEvents = "";
+  }
+}
+
+hideNetwork.addEventListener("change", syncNetworkVisibility);
+syncNetworkVisibility();
+
   const workView = document.querySelector(".work-view");
   const viewToggle = document.querySelector("#viewToggle");
 
   if (workView && viewToggle) {
 
   const compactView = window.matchMedia("(max-width: 1100px)");
-  let prefersListView = workView.classList.contains("show-list");
+  const isProjectOrPlayPage = document.querySelector(".project-page .case-title") !== null;
+  let prefersListView = workView.classList.contains("show-list") || isProjectOrPlayPage;
 
   function setListView(isList) {
     workView.classList.toggle("show-list", isList);
@@ -626,6 +679,11 @@ tick();
   function syncResponsiveView() {
     setListView(compactView.matches || prefersListView);
   }
+
+  window.addEventListener("portfolio:navigation-view", event => {
+    prefersListView = event.detail.list;
+    syncResponsiveView();
+  });
 
   viewToggle.addEventListener("click", () => {
     prefersListView = !workView.classList.contains("show-list");
