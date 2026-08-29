@@ -147,7 +147,7 @@ el.addEventListener("mouseenter", () => {
   hoverTitle.classList.add("is-visible");
 
   // NEW: show background image
-  hoverBg.style.backgroundImage = `url(${project.image})`;
+  hoverBg.style.backgroundImage = `url(${new URL(project.image, siteRoot)})`;
   hoverBg.classList.add("is-visible");
 });
 
@@ -665,6 +665,7 @@ syncNetworkVisibility();
 
   const compactView = window.matchMedia("(max-width: 1100px)");
   const isProjectOrPlayPage = document.querySelector(".project-page .case-title") !== null;
+  const isAboutPage = document.querySelector("body.about-page") == null; // adjust selector to match your markup
   let prefersListView = workView.classList.contains("show-list") || isProjectOrPlayPage;
 
   function setListView(isList) {

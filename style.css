@@ -468,6 +468,15 @@ body {
     grid-column: 1 / -1;
 }
 
+.about-title {
+  grid-column: 1 / 5; /* five columns */
+  grid-column: 1 / -1;
+  display: flex;
+    gap: 12px;
+    font-size: 16px;
+    align-items: baseline;
+}
+
 .case-meta {
     display: flex;
     flex-direction: column;
@@ -496,7 +505,7 @@ body {
 .case-text-row {
     display: grid;
     grid-template-columns: subgrid;
-    margin: 0px 0 25px;
+    margin: 0px 0 5px;
     font-size: 14px;
 }
 
@@ -506,7 +515,10 @@ body {
 
 .case-text-long {
     grid-column: 6 / 10;
-    columns: unset; 
+    display: flex;
+    flex-direction: column;
+    border: 1px solid red;
+    margin: 0 0 20px 0; /* space below each paragraph */
 }
 
 .case-image-grid {
@@ -570,7 +582,10 @@ body {
 .about-copy {
   grid-column: 1 / -1; /* bio text spans the full 6 columns */
   border: 1px solid red; 
-  margin-bottom: 4px;
+}
+
+.about-copy p {
+  margin: 0 0 10px 0; /* space below each paragraph */
 }
 
 .about-description {
