@@ -927,6 +927,22 @@ body {
   opacity: 1;
 }
 
+.hover-bg {
+  position: absolute;
+  inset: 24px;              /* was: inset: 0; — this pulls all 4 sides in */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  z-index: 0;
+}
+
+.hover-bg.is-visible {
+  opacity: 0.6;
+}
+
 .portfolio-network #shuffle {
   display: none;
 }

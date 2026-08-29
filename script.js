@@ -29,14 +29,14 @@ function drawY(y) {
 }
 
 const projects = [
-  { id: 1, title: "Lunar Gala: Fable", path: "project-pages/LunarGalaFable.html", type: ["brand", "editorial"], role: "lead", process: ["leading"], reach: "regional", client: "club" },
-  { id: 2, title: "Who Owns This Book?", path: "project-pages/WhoOwnsThisBook.html", type: ["editorial"], role: "solo", process: ["research", "production"], reach: "global", client: "coursework" },
-  { id: 3, title: "Apple Internship", path: "project-pages/Apple.html", type: ["brand"], role: "team", process: ["learning"], reach: "global", client: "intern" },
-  { id: 4, title: "Pittsburgh Air Quality", path: "project-pages/AirQuality.html", type: ["data", "editorial"], role: "solo", process: ["research"], reach: "school", client: "coursework" },
-  { id: 5, title: "Internet Archive Redesign", path: "project-pages/InternetArchive.html", type: ["brand"], role: "solo", process: ["experimenting"], reach: "school", client: "coursework" },
-  { id: 6, title: "Visualizing the Long Life of Compliments", path: "project-pages/Compliments.html", type: ["data"], role: "solo", process: ["experimenting", "production"], reach: "school", client: "coursework" },
-  { id: 7, title: "Celebrating Giorgia Lupi", path: "project-pages/Lupi.html", type: ["data", "editorial"], role: "solo", process: ["experimenting", "learning"], reach: "school", client: "coursework" },
-  { id: 8, title: "Ovation Film Festival", path: "project-pages/Ovation.html", type: ["brand"], role: "solo", process: ["experimenting"], reach: "regional", client: "club" }
+  { id: 1, title: "Lunar Gala: Fable", path: "project-pages/LunarGalaFable.html", type: ["brand", "editorial"], role: "lead", process: ["leading"], reach: "regional", client: "club", image: "images/Home/HomeBg/Horse.png" },
+  { id: 2, title: "Who Owns This Book?", path: "project-pages/WhoOwnsThisBook.html", type: ["editorial"], role: "solo", process: ["research", "production"], reach: "global", client: "coursework", image: "images/Home/HomeBg/Bookmarks.png" },
+  { id: 3, title: "Apple Internship", path: "project-pages/Apple.html", type: ["brand"], role: "team", process: ["learning"], reach: "global", client: "intern", image: "images/Home/HomeBg/Apple.png" },
+  { id: 4, title: "Pittsburgh Air Quality", path: "project-pages/AirQuality.html", type: ["data", "editorial"], role: "solo", process: ["research"], reach: "school", client: "coursework", image: "images/Home/HomeBg/GreenDot.png" },
+  { id: 5, title: "Internet Archive Redesign", path: "project-pages/InternetArchive.html", type: ["brand"], role: "solo", process: ["experimenting"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Archive-logo1.png" },
+  { id: 6, title: "Visualizing the Long Life of Compliments", path: "project-pages/Compliments.html", type: ["data"], role: "solo", process: ["experimenting", "production"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Orange-spiral.png" },
+  { id: 7, title: "Celebrating Giorgia Lupi", path: "project-pages/Lupi.html", type: ["data", "editorial"], role: "solo", process: ["experimenting", "learning"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Lupi-squares.png"  },
+  { id: 8, title: "Ovation Film Festival", path: "project-pages/Ovation.html", type: ["brand"], role: "solo", process: ["experimenting"], reach: "regional", client: "club", image: "images/Home/HomeBg/Ovation-wide.png"  },
 ];
 
 const siteRoot = new URL(".", document.currentScript?.src || window.location.href);
@@ -130,34 +130,34 @@ const hoverTitle = document.createElement("div");
 hoverTitle.className = "hover-title";
 field.appendChild(hoverTitle);
 
+// NEW: background image layer for hover state
+const hoverBg = document.createElement("div");
+hoverBg.className = "hover-bg";
+stage.insertBefore(hoverBg, stage.firstChild); // sits behind field/lines
+
 projects.forEach(project => {
   const el = document.createElement("div");
   el.className = "dot";
   el.dataset.id = `[${project.id}]`;
   el.title = project.title;
 
-  el.addEventListener("mouseenter", () => {
-    hoveredProjectId = project.id;
-    hoverTitle.textContent = project.title;
-    hoverTitle.classList.add("is-visible");
-  });
+el.addEventListener("mouseenter", () => {
+  hoveredProjectId = project.id;
+  hoverTitle.textContent = project.title;
+  hoverTitle.classList.add("is-visible");
 
-  el.addEventListener("mouseleave", () => {
-    hoveredProjectId = null;
-    hoverTitle.classList.remove("is-visible");
-  });
+  // NEW: show background image
+  hoverBg.style.backgroundImage = `url(${project.image})`;
+  hoverBg.classList.add("is-visible");
+});
 
-  el.addEventListener("click", event => {
-    event.stopPropagation();
-    const destination = new URL(project.path, siteRoot).href;
-    if (window.navigatePortfolioPage) {
-      window.navigatePortfolioPage(destination).catch(() => {
-        window.location.href = destination;
-      });
-    } else {
-      window.location.href = destination;
-    }
-  });
+el.addEventListener("mouseleave", () => {
+  hoveredProjectId = null;
+  hoverTitle.classList.remove("is-visible");
+
+  // NEW: hide background image
+  hoverBg.classList.remove("is-visible");
+});
 
   field.appendChild(el);
 
