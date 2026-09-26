@@ -147,7 +147,7 @@ body {
 }
 
 body {
-    font-family: "Cossette Texte", serif;
+    font-family: "Besley", serif;
     font-size: 16px;
     line-height: 1.5;
     color: #111;
@@ -256,7 +256,7 @@ body {
 .bio {
     font-size: 16px;
     margin-bottom: 32px;
-    border-top: 1px solid red; /* LINE PLACEHOLDER */ 
+    /* border-top: 1px solid red; /* LINE PLACEHOLDER */  */
 }
 
 .nav-link {
@@ -401,7 +401,7 @@ body {
     padding-bottom: 80px;
     display: grid;
     grid-template-columns: subgrid;
-    border-top: 1px solid red; /* LINE PLACEHOLDER */ 
+    /* border-top: 1px solid red; /* LINE PLACEHOLDER */  */
 }
 
 .case-media {
@@ -509,6 +509,10 @@ body {
     font-size: 14px;
 }
 
+.case-text-long, .case-text-short {
+    margin: 0 0 20px 0; /* space below each paragraph */
+}
+
 .case-text-short {
     grid-column: 1 / 5;
 }
@@ -517,8 +521,7 @@ body {
     grid-column: 6 / 10;
     display: flex;
     flex-direction: column;
-    border: 1px solid red;
-    margin: 0 0 20px 0; /* space below each paragraph */
+    /* border: 1px solid red; */
 }
 
 .case-image-grid {
@@ -581,7 +584,7 @@ body {
 /* ABOUT PAGE */
 .about-copy {
   grid-column: 1 / -1; /* bio text spans the full 6 columns */
-  border: 1px solid red; 
+  /* border: 1px solid red;  */
 }
 
 .about-copy p {
@@ -627,7 +630,7 @@ body {
   grid-column: 1 / -1;
   margin-top: 0;
   font-size: 14px;
-  border: 1px solid red; 
+  /* border: 1px solid red;  */
   margin-top: 32px;
 }
 
@@ -838,10 +841,10 @@ body {
     pointer-events: none;
     z-index: 9999;
 }
-
+/* 
 .grid-overlay div {
     background: rgba(255, 0, 0, 0.05);
-}
+} */
 
 
 /* data interaction */ 

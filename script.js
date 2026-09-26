@@ -29,11 +29,11 @@ function drawY(y) {
 }
 
 const projects = [
-  { id: 1, title: "Lunar Gala: Fable", path: "project-pages/LunarGalaFable.html", type: ["brand", "editorial"], role: "lead", process: ["leading"], reach: "regional", client: "club", image: "images/Home/HomeBg/Horse.png" },
-  { id: 2, title: "Who Owns This Book?", path: "project-pages/WhoOwnsThisBook.html", type: ["editorial"], role: "solo", process: ["research", "production"], reach: "global", client: "coursework", image: "images/Home/HomeBg/Bookmarks.png" },
+  { id: 2, title: "Lunar Gala: Fable", path: "project-pages/LunarGalaFable.html", type: ["brand", "editorial"], role: "lead", process: ["leading"], reach: "regional", client: "club", image: "images/Home/HomeBg/Horse.png" },
+  { id: 1, title: "Who Owns This Book?", path: "project-pages/WhoOwnsThisBook.html", type: ["editorial"], role: "solo", process: ["research", "production"], reach: "global", client: "coursework", image: "images/Home/HomeBg/Bookmarks.png" },
   { id: 3, title: "Apple Internship", path: "project-pages/Apple.html", type: ["brand"], role: "team", process: ["learning"], reach: "global", client: "intern", image: "images/Home/HomeBg/Apple.png" },
-  { id: 4, title: "Pittsburgh Air Quality", path: "project-pages/AirQuality.html", type: ["data", "editorial"], role: "solo", process: ["research"], reach: "school", client: "coursework", image: "images/Home/HomeBg/GreenDot.png" },
-  { id: 5, title: "Internet Archive Redesign", path: "project-pages/InternetArchive.html", type: ["brand"], role: "solo", process: ["experimenting"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Archive-logo1.png" },
+  { id: 5, title: "Pittsburgh Air Quality", path: "project-pages/AirQuality.html", type: ["data", "editorial"], role: "solo", process: ["research"], reach: "school", client: "coursework", image: "images/Home/HomeBg/GreenDot.png" },
+  { id: 4, title: "Internet Archive Redesign", path: "project-pages/InternetArchive.html", type: ["brand"], role: "solo", process: ["experimenting"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Archive-logo1.png" },
   { id: 6, title: "Visualizing the Long Life of Compliments", path: "project-pages/Compliments.html", type: ["data"], role: "solo", process: ["experimenting", "production"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Orange-spiral.png" },
   { id: 7, title: "Celebrating Giorgia Lupi", path: "project-pages/Lupi.html", type: ["data", "editorial"], role: "solo", process: ["experimenting", "learning"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Lupi-squares.png"  },
   { id: 8, title: "Ovation Film Festival", path: "project-pages/Ovation.html", type: ["brand"], role: "solo", process: ["experimenting"], reach: "regional", client: "club", image: "images/Home/HomeBg/Ovation-wide.png"  },
