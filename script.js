@@ -136,6 +136,7 @@ function hideHoverTitle() {
   hoverHideTimer = window.setTimeout(() => {
     hoverTitle.classList.remove("is-visible");
     hoverTitle.tabIndex = -1;
+    hoverBg.classList.remove("is-visible");
   }, 150);
 }
 
@@ -175,9 +176,6 @@ el.addEventListener("click", () => {
 el.addEventListener("mouseleave", () => {
   hoveredProjectId = null;
   hideHoverTitle();
-
-  // NEW: hide background image
-  hoverBg.classList.remove("is-visible");
 });
 
   field.appendChild(el);
@@ -685,9 +683,7 @@ syncNetworkVisibility();
   if (workView && viewToggle) {
 
   const compactView = window.matchMedia("(max-width: 1100px)");
-  const isProjectOrPlayPage = document.querySelector(".project-page .case-title") !== null;
-  const isAboutPage = document.querySelector("body.about-page") == null; // adjust selector to match your markup
-  let prefersListView = workView.classList.contains("show-list") || isProjectOrPlayPage;
+  let prefersListView = workView.classList.contains("show-list");
 
   function setListView(isList) {
     workView.classList.toggle("show-list", isList);
