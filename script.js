@@ -29,19 +29,38 @@ function drawY(y) {
 }
 
 const projects = [
-  { id: 2, title: "Lunar Gala: Fable", path: "project-pages/LunarGalaFable.html", type: ["brand", "editorial"], role: "lead", process: ["leading"], reach: "regional", client: "club", image: "images/Home/HomeBg/Horse.png" },
-  { id: 1, title: "Who Owns This Book?", path: "project-pages/WhoOwnsThisBook.html", type: ["editorial"], role: "solo", process: ["research", "production"], reach: "global", client: "coursework", image: "images/Home/HomeBg/Bookmarks.png" },
-  { id: 3, title: "Apple Internship", path: "project-pages/Apple.html", type: ["brand"], role: "team", process: ["learning"], reach: "global", client: "intern", image: "images/Home/HomeBg/Apple.png" },
-  { id: 5, title: "Pittsburgh Air Quality", path: "project-pages/AirQuality.html", type: ["data", "editorial"], role: "solo", process: ["research"], reach: "school", client: "coursework", image: "images/Home/HomeBg/GreenDot.png" },
-  { id: 4, title: "Internet Archive Redesign", path: "project-pages/InternetArchive.html", type: ["brand"], role: "solo", process: ["experimenting"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Archive-logo1.png" },
-  { id: 6, title: "Visualizing the Long Life of Compliments", path: "project-pages/Compliments.html", type: ["data"], role: "solo", process: ["experimenting", "production"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Orange-spiral.png" },
-  { id: 7, title: "Celebrating Giorgia Lupi", path: "project-pages/Lupi.html", type: ["data", "editorial"], role: "solo", process: ["experimenting", "learning"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Lupi-squares.png"  },
-  { id: 8, title: "Ovation Film Festival", path: "project-pages/Ovation.html", type: ["brand"], role: "solo", process: ["experimenting"], reach: "regional", client: "club", image: "images/Home/HomeBg/Ovation-wide.png"  },
+  { id: 2, title: "Lunar Gala: Fable", path: "project-pages/LunarGalaFable.html", process: ["systems", "stories"], type: ["brand", "editorial"], role: "lead", reach: "regional", client: "club", image: "images/Home/HomeBg/Horse.png" },
+  { id: 1, title: "Who Owns This Book?", path: "project-pages/WhoOwnsThisBook.html", process: ["stories"], type: ["editorial"], role: "solo", reach: "global", client: "coursework", image: "images/Home/HomeBg/Bookmarks.png" },
+  { id: 3, title: "Apple Internship", path: "project-pages/Apple.html", process: ["systems", "stories"], type: ["brand"], role: "team", reach: "global", client: "intern", image: "images/Home/HomeBg/Apple.png" },
+  { id: 5, title: "Pittsburgh Air Quality", path: "project-pages/AirQuality.html", process: ["systems", "stories", "data"], type: ["data", "editorial"], role: "solo", reach: "school", client: "coursework", image: "images/Home/HomeBg/GreenDot.png" },
+  { id: 4, title: "Internet Archive Redesign", path: "project-pages/InternetArchive.html", process: ["systems", "stories"], type: ["brand"], role: "solo", reach: "school", client: "coursework", image: "images/Home/HomeBg/Archive-logo1.png" },
+  { id: 6, title: "Visualizing the Long Life of Compliments", path: "project-pages/Compliments.html", process: ["systems", "stories", "data"], type: ["data"], role: "solo", reach: "school", client: "coursework", image: "images/Home/HomeBg/Orange-spiral.png" },
+  { id: 7, title: "Celebrating Giorgia Lupi", path: "project-pages/Lupi.html", process: ["systems", "stories"], type: ["data", "editorial"], role: ["solo", "learning"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Lupi-squares.png"  },
+  { id: 8, title: "Ovation Film Festival", path: "project-pages/Ovation.html", process: ["systems"],type: ["brand"], role: "solo", reach: "regional", client: "club", image: "images/Home/HomeBg/Ovation-wide.png"  },
 ];
 
 const siteRoot = new URL(".", document.currentScript?.src || window.location.href);
 
 const stateDefinitions = [
+    {
+    title: "components",
+    field: "process",
+    nodeStarts: {
+      1: { x: .85, y: .41 },
+      2: { x: .46, y: .41 },
+      3: { x: .58, y: .27 },
+      4: { x: .33, y: .30 },
+      5: { x: .47, y: .63 },
+      6: { x: .63, y: .54 },
+      7: { x: .44, y: .13 },
+      8: { x: .16, y: .65 }
+    },
+    labels: {
+        systems: { x: .18, y: .55 },
+        stories: { x: .80, y: .22 },
+        data: { x: .58, y: .90},
+    }
+  },
   {
     title: "type of work",
     field: "type",
@@ -58,17 +77,6 @@ const stateDefinitions = [
         solo: { x: .16, y: .30 },
         team: { x: .80, y: .24 },
         lead: { x: .48, y: .72 }
-    }
-  },
-  {
-    title: "process / skills",
-    field: "process",
-    labels: {
-        research: { x: .18, y: .24 },
-        leading: { x: .62, y: .18 },
-        production: { x: .84, y: .48 },
-        experimenting: { x: .22, y: .76 },
-        learning: { x: .66, y: .82 }
     }
   },
   {
@@ -109,7 +117,8 @@ function buildState(def) {
   return {
     title: def.title,
     labels: def.labels,
-    links
+    links,
+    nodeStarts: def.nodeStarts
   };
 }
 
@@ -180,8 +189,13 @@ el.addEventListener("mouseleave", () => {
 
   field.appendChild(el);
 
-  const initialX = stageWidth() / 2 + Math.random() * 80 - 40;
-  const initialY = stageHeight() / 2 + Math.random() * 80 - 40;
+  const position = active.nodeStarts?.[project.id];
+  const initialX = position
+    ? position.x * stageWidth()
+    : stageWidth() / 2 + Math.random() * 80 - 40;
+  const initialY = position
+    ? position.y * stageHeight()
+    : stageHeight() / 2 + Math.random() * 80 - 40;
 
   nodes.push({
     id: project.id,
