@@ -47,14 +47,14 @@ function drawY(y) {
 }
 
 const projects = [
-  { id: 2, title: "Lunar Gala: Fable", path: "project-pages/LunarGalaFable.html", process: ["systems", "stories"], type: ["brand", "editorial"], role: "lead", reach: "regional", client: "club", image: "images/Home/HomeBg/Horse.png" },
-  { id: 1, title: "Who Owns This Book?", path: "project-pages/WhoOwnsThisBook.html", process: ["stories"], type: ["editorial"], role: "solo", reach: "global", client: "coursework", image: "images/Home/HomeBg/Bookmarks.png" },
-  { id: 3, title: "Apple Internship", path: "project-pages/Apple.html", process: ["systems", "stories"], type: ["brand"], role: "team", reach: "global", client: "intern", image: "images/Home/HomeBg/Apple.png" },
-  { id: 5, title: "Pittsburgh Air Quality", path: "project-pages/AirQuality.html", process: ["systems", "stories", "data"], type: ["data", "editorial"], role: "solo", reach: "school", client: "coursework", image: "images/Home/HomeBg/GreenDot.png" },
-  { id: 4, title: "Internet Archive Redesign", path: "project-pages/InternetArchive.html", process: ["systems", "stories"], type: ["brand"], role: "solo", reach: "school", client: "coursework", image: "images/Home/HomeBg/Archive-logo1.png" },
-  { id: 6, title: "Visualizing the Long Life of Compliments", path: "project-pages/Compliments.html", process: ["systems", "stories", "data"], type: ["data"], role: "solo", reach: "school", client: "coursework", image: "images/Home/HomeBg/Orange-spiral.png" },
-  { id: 7, title: "Celebrating Giorgia Lupi", path: "project-pages/Lupi.html", process: ["systems", "stories"], type: ["data", "editorial"], role: ["solo", "learning"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Lupi-squares.png"  },
-  { id: 8, title: "Ovation Film Festival", path: "project-pages/Ovation.html", process: ["systems"],type: ["brand"], role: "solo", reach: "regional", client: "club", image: "images/Home/HomeBg/Ovation-wide.png"  },
+  { id: 2, title: "Lunar Gala: Fable", path: "project-pages/LunarGalaFable.html", process: ["systems", "stories"], type: ["brand", "editorial"], role: "lead", reach: "regional", client: "club", image: "images/Home/HomeBg/Horse.webp" },
+  { id: 1, title: "Who Owns This Book?", path: "project-pages/WhoOwnsThisBook.html", process: ["stories"], type: ["editorial"], role: "solo", reach: "global", client: "coursework", image: "images/Home/HomeBg/Bookmarks.webp" },
+  { id: 3, title: "Apple Internship", path: "project-pages/Apple.html", process: ["systems", "stories"], type: ["brand"], role: "team", reach: "global", client: "intern", image: "images/Home/HomeBg/Apple.webp" },
+  { id: 5, title: "Pittsburgh Air Quality", path: "project-pages/AirQuality.html", process: ["systems", "stories", "data"], type: ["data", "editorial"], role: "solo", reach: "school", client: "coursework", image: "images/Home/HomeBg/GreenDot.webp" },
+  { id: 4, title: "Internet Archive Redesign", path: "project-pages/InternetArchive.html", process: ["systems", "stories"], type: ["brand"], role: "solo", reach: "school", client: "coursework", image: "images/Home/HomeBg/Archive-logo1.webp" },
+  { id: 6, title: "Visualizing the Long Life of Compliments", path: "project-pages/Compliments.html", process: ["systems", "stories", "data"], type: ["data"], role: "solo", reach: "school", client: "coursework", image: "images/Home/HomeBg/Orange-spiral.webp" },
+  { id: 7, title: "Celebrating Giorgia Lupi", path: "project-pages/Lupi.html", process: ["systems", "stories"], type: ["data", "editorial"], role: ["solo", "learning"], reach: "school", client: "coursework", image: "images/Home/HomeBg/Lupi-squares.webp"  },
+  { id: 8, title: "Ovation Film Festival", path: "project-pages/Ovation.html", process: ["systems"],type: ["brand"], role: "solo", reach: "regional", client: "club", image: "images/Home/HomeBg/Ovation-wide.webp"  },
 ];
 
 const siteRoot = new URL(".", document.currentScript?.src || window.location.href);
