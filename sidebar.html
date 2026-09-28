@@ -22,7 +22,11 @@
     <div class="stage portfolio-network">
       <button id="shuffle"></button>
       <div id="stateTitle"></div>
-      <div id="stateCounter"></div>
+      <div class="state-readout">
+        <img id="shuffleIcon" alt="Shuffle visualization">
+        <div id="stateCounter"></div>
+      </div>
+      <p id="networkHint" class="network-hint">hover to explore, click to shuffle</p>
       <div id="field"><svg id="lines"></svg></div>
     </div>
 
@@ -62,9 +66,10 @@
     </div>
   </div>
 </div>
-            <!--Other page links-->
-            <a href="project-pages/play.html" class="nav-link work-link">Play</a>
-            <a href="project-pages/about.html" class="nav-link work-link">About</a>
+            <div class="sidebar-links">
+                <a href="project-pages/play.html" class="nav-link work-link">Play</a>
+                <a href="project-pages/about.html" class="nav-link work-link">About</a>
+            </div>
             <footer class="sidebar-footer">
                 <p>Built with HTML/CSS/JS, Updated September 2026</p>
                 <!-- <p>Typeset in Besley, by Owen Earl.</p> -->
