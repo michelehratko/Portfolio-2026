@@ -17,15 +17,15 @@ fetch(new URL("sidebar.html", includeScript.src))
     // Resolve shared navigation from this script's location so it works on
     // both the home page and nested project pages.
     const sidebarLinks = [
-      { selector: '.name-link[href="/index.html"]', path: '/index.html' },
-      { selector: '.nav-link.work-link[href="/index.html"]', path: '/index.html' },
-      { selector: '.nav-link[href="/project-pages/play.html"]', path: '/project-pages/play.html' },
-      { selector: '.nav-link[href="/project-pages/about.html"]', path: '/project-pages/about.html' }
+      { selector: '.name-link[href="index.html"]', path: 'index.html' },
+      { selector: '.nav-link.work-link[href="index.html"]', path: 'index.html' },
+      { selector: '.nav-link[href="project-pages/play.html"]', path: 'project-pages/play.html' },
+      { selector: '.nav-link[href="project-pages/about.html"]', path: 'project-pages/about.html' }
     ];
 
     sidebarLinks.forEach(({ selector, path }) => {
       sidebar.querySelectorAll(selector).forEach((link) => {
-        link.href = new URL(path, window.location.origin).href;
+        link.href = new URL(path, includeScript.src).href;
       });
     });
 
