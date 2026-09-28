@@ -216,11 +216,11 @@ em {
 .projects {
   grid-column: 4 / 13;
   display: grid;
-  grid-template-columns: subgrid; for 1 col 
-  /* for 2 col 
+  grid-template-columns: subgrid; /* for 1 col */
+  /* for 2 col
   grid-template-columns: repeat(2, minmax(0, 1fr)); 
   column-gap: 24px; 
-  /* end */  */
+  */
   align-content: start;
   height: 100vh;
   box-sizing: border-box;
@@ -274,7 +274,7 @@ em {
 .bio {
     font-size: 16px;
     margin-bottom: 32px;
-    /* border-top: 1px solid red; /* LINE PLACEHOLDER */  */
+  /* border-top: 1px solid red; */
 }
 
 .nav-link {
@@ -429,7 +429,7 @@ em {
     padding-bottom: 80px;
     display: grid;
     grid-template-columns: subgrid;
-    /* border-top: 1px solid red; /* LINE PLACEHOLDER */  */
+    /* border-top: 1px solid red; */
 }
 
 .case-media {
@@ -771,28 +771,77 @@ em {
   }
 
   .layout {
-    display: block;
+    display: flex;
+    flex-direction: column;
     height: auto;
     min-height: 100vh;
     padding: 24px;
   }
 
+  #sidebar-placeholder,
+  .sidebar {
+    display: contents;
+  }
+
   .sidebar,
   .projects {
-    display: block;
     height: auto;
     min-height: 0;
     overflow: visible;
     padding: 0;
   }
 
-  .sidebar {
-    margin-right: 0;
-    margin-bottom: 48px;
+  .site-header,
+  .projects > .name {
+    display: none;
   }
 
   .projects {
     margin-right: 0;
+    order: 4;
+  }
+
+  .sidebar-footer {
+    order: 5;
+    margin-top: 48px;
+    padding-bottom: 24px;
+  }
+
+  .work-view {
+    display: contents;
+  }
+
+  .work-view-header {
+    order: 0;
+    margin-bottom: 8px;
+  }
+
+  .work-view-header .nav-link {
+    margin-bottom: 0;
+  }
+
+  .sidebar > .nav-link {
+    margin-bottom: 8px;
+  }
+
+  .sidebar > .nav-link[href*="play.html"] {
+    order: 1;
+  }
+
+  .sidebar > .nav-link[href*="about.html"] {
+    order: 2;
+  }
+
+  .work-view-body {
+    order: 3;
+  }
+
+  .project-topbar {
+    margin-bottom: 24px;
+  }
+
+  .project-topbar .close-link {
+    display: none;
   }
 
   .sidebar .info-columns {
