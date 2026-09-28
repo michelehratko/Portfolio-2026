@@ -207,7 +207,11 @@ body {
 .projects {
   grid-column: 4 / 13;
   display: grid;
-  grid-template-columns: subgrid;
+  grid-template-columns: subgrid; for 1 col 
+  /* for 2 col 
+  grid-template-columns: repeat(2, minmax(0, 1fr)); 
+  column-gap: 24px; 
+  /* end */  */
   align-content: start;
   height: 100vh;
   box-sizing: border-box;
@@ -220,6 +224,11 @@ body {
 
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
+}
+
+/*adding for 3 col test */ 
+.projects .name {
+  grid-column: 1 / -1;
 }
 
 .projects:hover {
@@ -302,15 +311,25 @@ body {
   grid-column: 4 / 13;
 }
 
+/* 1 col */ 
 .project-card {
     display: grid;
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
-    margin-bottom: 48px;
+    margin-bottom: 36px;
     color: inherit;
     text-decoration: none;
     cursor: pointer;
 }
+
+/* for 3 col */ 
+/* .project-card {
+  margin-bottom: 48px;
+
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+} */
 
 .project-card:hover .project-name {
     text-decoration: underline;
@@ -419,7 +438,7 @@ body {
 }
 
 .case-media-large, .case-image-grid {
-   margin-bottom: 18px;
+   margin-bottom: 14px;
 }
 
 .case-media-large {
@@ -510,7 +529,7 @@ body {
 }
 
 .case-text-long, .case-text-short {
-    margin: 0 0 20px 0; /* space below each paragraph */
+    margin: 0 0 25px 0; /* space below each paragraph */
 }
 
 .case-text-short {
@@ -589,6 +608,10 @@ body {
 
 .about-copy p {
   margin: 0 0 10px 0; /* space below each paragraph */
+}
+
+.about-copy a {
+  color: inherit;
 }
 
 .about-description {
@@ -841,10 +864,10 @@ body {
     pointer-events: none;
     z-index: 9999;
 }
-/* 
+
 .grid-overlay div {
     background: rgba(255, 0, 0, 0.05);
-} */
+}
 
 
 /* data interaction */ 
@@ -936,6 +959,8 @@ body {
   font-size: clamp(11px, 0.95vw, 13px);
   line-height: 1;
   white-space: nowrap;
+  color: var(--ink);
+  text-decoration: none;
   pointer-events: none;
   opacity: 0;
   transform: translate(4px, -50%);
@@ -943,6 +968,8 @@ body {
 
 .portfolio-network .hover-title.is-visible {
   opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .hover-bg {

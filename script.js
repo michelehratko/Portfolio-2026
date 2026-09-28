@@ -125,10 +125,22 @@ let transitionStart = performance.now();
 let impulseFlip = 1;
 let hoveredProjectId = null;
 const SETTLE_DURATION = 3000;
+let hoverHideTimer;
 
-const hoverTitle = document.createElement("div");
+const hoverTitle = document.createElement("a");
 hoverTitle.className = "hover-title";
+hoverTitle.tabIndex = -1;
 field.appendChild(hoverTitle);
+
+function hideHoverTitle() {
+  hoverHideTimer = window.setTimeout(() => {
+    hoverTitle.classList.remove("is-visible");
+    hoverTitle.tabIndex = -1;
+  }, 150);
+}
+
+hoverTitle.addEventListener("mouseenter", () => window.clearTimeout(hoverHideTimer));
+hoverTitle.addEventListener("mouseleave", hideHoverTitle);
 
 // NEW: background image layer for hover state
 const hoverBg = document.createElement("div");
@@ -142,8 +154,11 @@ projects.forEach(project => {
   el.title = project.title;
 
 el.addEventListener("mouseenter", () => {
+  window.clearTimeout(hoverHideTimer);
   hoveredProjectId = project.id;
   hoverTitle.textContent = project.title;
+  hoverTitle.href = new URL(project.path, siteRoot).href;
+  hoverTitle.tabIndex = 0;
   hoverTitle.classList.add("is-visible");
 
   // NEW: show background image
@@ -151,9 +166,15 @@ el.addEventListener("mouseenter", () => {
   hoverBg.classList.add("is-visible");
 });
 
+el.addEventListener("click", () => {
+  if (hoveredProjectId === project.id) {
+    window.location.href = new URL(project.path, siteRoot).href;
+  }
+});
+
 el.addEventListener("mouseleave", () => {
   hoveredProjectId = null;
-  hoverTitle.classList.remove("is-visible");
+  hideHoverTitle();
 
   // NEW: hide background image
   hoverBg.classList.remove("is-visible");
