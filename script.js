@@ -7,6 +7,24 @@ const title = stage.querySelector("#stateTitle");
 const counter = stage.querySelector("#stateCounter");
 const shuffleButton = stage.querySelector("#shuffle");
 
+function hydrateHomeHoverGifs() {
+  const hoverImages = document.querySelectorAll('.project-image-hover[data-src]');
+  if (!hoverImages.length) return;
+
+  const loadHoverGIF = (image) => {
+    if (!image.dataset.src || image.src === image.dataset.src) return;
+    image.src = image.dataset.src;
+  };
+
+  window.addEventListener('load', () => {
+    requestAnimationFrame(() => {
+      hoverImages.forEach(loadHoverGIF);
+    });
+  });
+}
+
+hydrateHomeHoverGifs();
+
 const SIM_WIDTH = 340;
 const SIM_HEIGHT = 200;
 
