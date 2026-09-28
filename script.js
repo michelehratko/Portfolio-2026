@@ -11,19 +11,15 @@ function hydrateHomeHoverGifs() {
   const hoverImages = document.querySelectorAll('.project-image-hover[data-src]');
   if (!hoverImages.length) return;
 
-  const loadHoverGIF = (image) => {
-    if (!image.dataset.src || image.src === image.dataset.src) return;
-    image.src = image.dataset.src;
-  };
-
-  window.addEventListener('load', () => {
-    requestAnimationFrame(() => {
-      hoverImages.forEach(loadHoverGIF);
-    });
+  hoverImages.forEach((image) => {
+    if (image.dataset.src && image.getAttribute('src') !== image.dataset.src) {
+      image.src = image.dataset.src;
+    }
   });
 }
 
 hydrateHomeHoverGifs();
+window.addEventListener('portfolio:navigation-view', hydrateHomeHoverGifs);
 
 const SIM_WIDTH = 340;
 const SIM_HEIGHT = 200;
