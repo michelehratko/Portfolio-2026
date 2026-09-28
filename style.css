@@ -271,6 +271,54 @@ em {
     margin-bottom: 24px;
 }
 
+.site-header .name-link {
+    position: relative;
+    display: inline-block;
+    width: 15ch;
+    color: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.site-header .name-link .name-short,
+.site-header .name-link .name-full {
+    display: block;
+    white-space: nowrap;
+}
+
+.site-header .name-link .name-short {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.site-header .name-link .name-full {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 0;
+    overflow: hidden;
+    opacity: 1;
+    transition: width 0.6s steps(18, end), opacity 0.2s ease;
+}
+
+.site-header .name-link:hover .name-short {
+    opacity: 0;
+}
+
+.site-header .name-link:hover .name-full {
+    width: 15ch;
+    opacity: 1;
+}
+
+.site-header .name-link:not(:hover) .name-full {
+    width: 0;
+    opacity: 0;
+}
+
+.site-header .name-link:not(:hover) .name-short {
+    opacity: 1;
+}
+
 .bio {
     font-size: 16px;
     margin-bottom: 32px;
@@ -475,8 +523,10 @@ em {
 }
 
 .case-description .case-subhead {
-  font-size: 16px;
+  font-size: 18px;
+  /* font-weight: 500; */
   margin: 0 0 20px;
+  line-height: 1.3;
 }
 
 .case-title,

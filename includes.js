@@ -16,15 +16,17 @@ fetch(new URL("sidebar.html", includeScript.src))
 
     // Resolve shared navigation from this script's location so it works on
     // both the home page and nested project pages.
-    const sidebarLinks = {
-      'a[href="index.html"]': "index.html",
-      'a[href="project-pages/play.html"]': "project-pages/play.html",
-      'a[href="project-pages/about.html"]': "project-pages/about.html"
-    };
+    const sidebarLinks = [
+      { selector: '.name-link[href="/index.html"]', path: '/index.html' },
+      { selector: '.nav-link.work-link[href="/index.html"]', path: '/index.html' },
+      { selector: '.nav-link[href="/project-pages/play.html"]', path: '/project-pages/play.html' },
+      { selector: '.nav-link[href="/project-pages/about.html"]', path: '/project-pages/about.html' }
+    ];
 
-    Object.entries(sidebarLinks).forEach(([selector, path]) => {
-      const link = sidebar.querySelector(selector);
-      if (link) link.href = new URL(path, includeScript.src).href;
+    sidebarLinks.forEach(({ selector, path }) => {
+      sidebar.querySelectorAll(selector).forEach((link) => {
+        link.href = new URL(path, window.location.origin).href;
+      });
     });
 
     sidebar.querySelectorAll("[data-project-path]").forEach((link) => {
@@ -84,6 +86,14 @@ function initializeCaseImageGrids(container = document) {
 
 async function navigatePortfolioPage(url, { updateHistory = true } = {}) {
   const destination = new URL(url, window.location.href);
+
+  if (destination.origin === window.location.origin &&
+      destination.pathname === window.location.pathname &&
+      destination.search === window.location.search) {
+    window.scrollTo(0, 0);
+    return;
+  }
+
   const response = await fetch(destination.href);
 
   if (!response.ok) throw new Error(`Could not load ${destination.pathname}`);
@@ -128,8 +138,11 @@ document.addEventListener("click", (event) => {
 
   const destination = new URL(link.href, window.location.href);
   const isPortfolioPage = destination.origin === window.location.origin && destination.pathname.endsWith(".html");
+  const isSamePage = destination.origin === window.location.origin &&
+    destination.pathname === window.location.pathname &&
+    destination.search === window.location.search;
 
-  if (!isPortfolioPage || destination.hash) return;
+  if (!isPortfolioPage || destination.hash || isSamePage) return;
 
   event.preventDefault();
   navigatePortfolioPage(destination.href).catch(() => {
