@@ -84,6 +84,39 @@ function initializeCaseImageGrids(container = document) {
   });
 }
 
+function initializeCaseVideos(container = document) {
+  const videos = container.querySelectorAll("video[data-autoplay]");
+
+  videos.forEach((video) => {
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = "none";
+  });
+
+  const playVideo = (video) => {
+    Promise.resolve(video.play()).catch(() => {
+      video.controls = true;
+    });
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    videos.forEach(playVideo);
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(({ target: video, isIntersecting }) => {
+      if (isIntersecting) {
+        playVideo(video);
+      } else {
+        video.pause();
+      }
+    });
+  }, { rootMargin: "200px 0px" });
+
+  videos.forEach((video) => observer.observe(video));
+}
+
 async function navigatePortfolioPage(url, { updateHistory = true } = {}) {
   const destination = new URL(url, window.location.href);
 
@@ -128,6 +161,7 @@ async function navigatePortfolioPage(url, { updateHistory = true } = {}) {
 
   window.scrollTo(0, 0);
   initializeCaseImageGrids(nextProjects);
+  initializeCaseVideos(nextProjects);
 }
 
 window.navigatePortfolioPage = navigatePortfolioPage;
@@ -158,5 +192,6 @@ window.addEventListener("popstate", () => {
 
 window.addEventListener("DOMContentLoaded", () => {
   initializeCaseImageGrids();
+  initializeCaseVideos();
 });
 
