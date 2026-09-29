@@ -880,15 +880,19 @@ em {
     margin-bottom: 0;
   }
 
-  .sidebar > .nav-link {
+  .sidebar-links {
+    display: contents;
+  }
+
+  .sidebar-links .nav-link {
     margin-bottom: 8px;
   }
 
-  .sidebar > .nav-link[href*="play.html"] {
+  .sidebar-links .nav-link[href*="play.html"] {
     order: 1;
   }
 
-  .sidebar > .nav-link[href*="about.html"] {
+  .sidebar-links .nav-link[href*="about.html"] {
     order: 2;
   }
 
