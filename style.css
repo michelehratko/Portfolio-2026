@@ -1138,7 +1138,7 @@ em {
 .portfolio-network .state-readout {
   position: absolute;
   right: 0;
-  bottom: -20px;
+  bottom: -20px;  
   z-index: 10;
   display: flex;
   align-items: center;

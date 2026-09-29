@@ -201,7 +201,6 @@ function previewHoverImages() {
   previewTimer = window.setTimeout(advancePreview, 110);
 }
 
-/* end image preview */ 
 projects.forEach(project => {
   const el = document.createElement("div");
   el.className = "dot";
@@ -209,7 +208,7 @@ projects.forEach(project => {
   el.title = project.title;
 
 el.addEventListener("mouseenter", () => {
-  stopImagePreview();  /* image preview */ 
+    stopImagePreview();
   window.clearTimeout(hoverHideTimer);
   hoveredProjectId = project.id;
   hoverTitle.textContent = project.title;
@@ -257,8 +256,10 @@ el.addEventListener("mouseleave", () => {
 
 const initialPreviewKey = "portfolio-initial-preview-shown";
 if (!sessionStorage.getItem(initialPreviewKey)) {
-  previewHoverImages();
-  sessionStorage.setItem(initialPreviewKey, "true");
+  requestAnimationFrame(() => {
+    previewHoverImages();
+    sessionStorage.setItem(initialPreviewKey, "true");
+  });
 }
 
 function getLabel(name) {
