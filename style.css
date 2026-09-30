@@ -525,11 +525,12 @@ em {
   grid-template-columns: subgrid;
   grid-column: 1 / -1;
   gap: var(--grid-gutter);
-  margin: 16px 0 36px;
+  margin: 16px 0 24px;
 }
 
 .case-description p {
   font-size: 14px;
+  margin: 0 0 12px;
 }
 
 .case-description .case-subhead {
