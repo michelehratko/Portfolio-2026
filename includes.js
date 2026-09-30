@@ -93,10 +93,22 @@ function initializeCaseVideos(container = document) {
     video.preload = "none";
   });
 
+  if (window.matchMedia("(min-width: 768px)").matches && "IntersectionObserver" in window) {
+    const preloadObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(({ target: video, isIntersecting }) => {
+        if (!isIntersecting) return;
+
+        video.preload = "auto";
+        video.load();
+        observer.unobserve(video);
+      });
+    }, { rootMargin: "1000px 0px" });
+
+    videos.forEach((video) => preloadObserver.observe(video));
+  }
+
   const playVideo = (video) => {
-    Promise.resolve(video.play()).catch(() => {
-      video.controls = true;
-    });
+    Promise.resolve(video.play()).catch(() => {});
   };
 
   if (!("IntersectionObserver" in window)) {
